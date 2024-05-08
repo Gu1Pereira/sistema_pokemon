@@ -11,7 +11,8 @@ $pasta = "img/";
 move_uploaded_file($_FILES['foto']['tmp_name'], $pasta . $nomeNovo);
 
 if($nomeDoArquivo != ""){
-    $sql = "update tb_pokemon set nome='$nome', tipo='$tipo', foto='$foto' where id = $id";
+    $sql = "update tb_pokemon set nome='$nome', tipo='$tipo', foto='$nomeNovo' where id = $id"; 
+    //trocar $foto pata $nomeNovo
 }else{
     $sql = "update tb_pokemon set nome='$nome', tipo='$tipo' where id = $id";
 }
