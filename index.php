@@ -1,67 +1,40 @@
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include "cabecalho.php"; ?>
 
-    <!-- Links -->
-    <link rel="stylesheet" href="style.css">
-    
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#ffffff">
+<h2>Ambiente administrativo</h2>
+<!-- Cadastrar um novo pokemon -->
+<a href="form-inserir.php" class="btn btn-primary">NOVO POKEMON</a>
 
-    
-
-    <title>Pokedex</title>
-</head>
-<body>
-    <?php
-    include "conexao.php";
-    $id = $_GET['id'] ?? 1;
-    $proximo = $id + 1;
-   
-    $anterior =$id - 1;
-    if($anterior < 1){
-        $anterior = 1;
-    }
-
-    $nome = "nome do pokemon";
-    $foto = "foto do pokemon";
-
-    $sql = "select * from tb_pokemon where id = $id";
-    $resultado = mysqli_query($conexao, $sql);
-    while ($umPokemon = mysqli_fetch_assoc($resultado)):
-        $nome = $umPokemon['nome'];
-        $foto = $umPokemon['foto'];
+<?php include "conexao.php";?>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $sql = "select * from tb_pokemon";
+        $resultado = mysqli_query($conexao, $sql);
+        while($umPokemon = mysqli_fetch_assoc($resultado)): 
+        ?>
+        <tr>
+            <td><?= $umPokemon["id"];?></td>
+            <td><?= $umPokemon["nome"];?></td>
+            <td><?= $umPokemon["tipo"];?></td>
+            <td>
+                <a href="form-alterar.php?id=<?= $umPokemon['id'];?>">Editar</a>
+                <a href="excluir.php?id=<?= $umPokemon['id'];?>">Excluir</a>
+                <a href="visualizar.php?id=<?= $umPokemon['id'];?>">Ver</a>
+            </td>
+        </tr>
+        <?php 
     endwhile;
+    mysqli_close($conexao); 
+     ?>
+    </tbody>
+</table>
 
-    ?>
-    
-    <main>
-        
-        <img src="img/<?=$foto?>" 
-        alt="pokemon" 
-        class="pokemon_image">
-            
-        <h1 class="pokemon_data">
-            <span class="pokemon_number"></span><?=$id?> -
-            <span class="pokemon_name"><?=$nome?></span>
-        </h1>
 
-        <!-- <form>
-            <input type="search"
-            class="input_search"
-            placeholder="Name or Number"
-            required>
-        </form> -->
-
-        <div class="buttons">
-            <a href="index.php?id=<?=$anterior?>" class="button btn-prev">&lt; Prev </a> 
-            <a href="index.php?id=<?=$proximo?>" class="button btn-next">Next &gt;</a>
-        </div>
-        
-
-        <img src="img/pokedex.png" alt="pokedex" class="pokedex">
-    </main>
-
-</body>
-</html>
+<?php include "rodape.php"; ?>
